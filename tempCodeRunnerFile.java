@@ -1,0 +1,1 @@
+new SudokuBoard("boards/valid-incomplete.sdk")
