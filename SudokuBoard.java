@@ -1,7 +1,7 @@
 // Zhengxiang Yu
 // CS 143
-// HW #1: Sudoku #1 (Board Setup)
-// This class is used to read a Sudoku board from a file and print it in a formatted way.
+// HW #2: Sudoku #2 (isValid, isSolved)
+// This class add two methods to check if a Sudoku board is valid and solved.
 import java.io.*;
 import java.util.*;
 public class SudokuBoard {
@@ -37,6 +37,8 @@ public class SudokuBoard {
         return result;
     }
 
+    //pre: none
+    //post: return a boolean indicating whether the board is valid
     public boolean isValid() {
         Set<Character> valid = new HashSet<Character>(Arrays.asList('1','2','3','4','5','6','7','8','9',' '));
         for (int i = 0; i < 9; i++) {
@@ -67,10 +69,10 @@ public class SudokuBoard {
 
         for (int n = 1; n <=9; n++) {
             Set<Character> seen = new HashSet<Character>();
-            int[][] square = miniSquare(n);
+            char[][] square = miniSquare(n);
             for (int i = 0; i < 3; i++) {
                 for(int j = 0; j < 3; j++) {
-                    if ((square[i][j] != ' ') && (seen.add(board[i][j]) == false)) {
+                    if ((square[i][j] != ' ') && (seen.add(square[i][j]) == false)) {
                         return false;
                     }
                 }
@@ -79,22 +81,39 @@ public class SudokuBoard {
         return true;
     }
 
+    //pre: none
+    //post: return a boolean indicating whether the board is solved
     public boolean isSolved() {
         if (isValid() == false) {
             return false;
         }
+        Map<Character, Integer> count = new HashMap<>();
+        Set<Character> valid = new HashSet<Character>(Arrays.asList('1','2','3','4','5','6','7','8','9'));
+        for (char i : valid) {
+            count.put(i,0);
+        }
+        
         for (int i = 0; i < 9; i++) {
             for(int j = 0; j < 9; j++) {
-                if (board[i][j] == ' ') {
-                    return false;
+                if (board[i][j] != ' ') {
+                    int val = count.get(board[i][j]);
+                    count.put(board[i][j], val + 1);
                 }
+            }
+        }
+        for (char i : count.keySet()) {
+            if (count.get(i) != 9) {
+                return false;
             }
         }
         return true;
     }
 
-    private int[][] miniSquare(int spot) {
-      int[][] mini = new int[3][3];
+    //pre: spot is an integer between 1 and 9
+    //post: return a 3x3 2d array of char of the Sudoku board corresponding to the
+    //      given spot 
+    private char[][] miniSquare(int spot) {
+      char[][] mini = new char[3][3];
       for(int r = 0; r < 3; r++) {
          for(int c = 0; c < 3; c++) {
             // whoa - wild! This took me a solid hour to figure out (at least)

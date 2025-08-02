@@ -7,7 +7,7 @@ import java.io.*;
 import java.util.*;
 public class PlaySudoku {
     public static void main(String[] args) throws FileNotFoundException{
-        SudokuBoard newBoard = new SudokuBoard("data1.sdk");
+        SudokuBoard newBoard = new SudokuBoard("boards/valid-incomplete.sdk");
         System.out.println(newBoard);
     }
 }
